@@ -2,7 +2,7 @@
 
 **Project:** Nexvia DA-02  
 **Technologies:** Google BigQuery, SQL, dbt, Tableau, Python  
-**Data source:** Google Analytics 4 (GA4) public obfuscated ecommerce sample dataset
+**Data source:** GA4 public obfuscated ecommerce sample dataset
 
 ## 1. Project Overview
 
@@ -17,13 +17,13 @@ The objective is to analyze customer behavior, purchasing patterns, customer seg
 - dbt Core with BigQuery adapter – modular data transformations and testing
 - Tableau – dashboard development and visualization
 - Python – CSV data validation
-- Git and GitHub – version control and project documentation
+- Git and GitHub – version control and documentation
 
 ## 3. Data Processing and Architecture
 
 1. GA4 ecommerce sample data is stored in BigQuery.
 2. SQL transformations prepare session and order datasets.
-3. Synthetic CRM-style customer profiles and a deterministic pseudonymous identity map are used to construct the Customer 360 dataset.
+3. Synthetic CRM-style customer profiles and deterministic pseudonymous identity mapping are used to construct Customer 360.
 4. RFM segmentation and historical CLV calculations are performed.
 5. Acquisition-channel attribution is analyzed using available first-user acquisition fields.
 6. Synthetic advertising spend is used for campaign analysis.
@@ -51,7 +51,7 @@ The dbt project connects to the existing BigQuery `customer360` dataset.
 - dbt run completed successfully
 - dbt documentation generated and served
 
-Verified output row counts:
+**Verified output row counts:**
 
 | Model | Rows |
 |---|---:|
@@ -68,7 +68,7 @@ The Customer 360 dbt model references the existing BigQuery Customer 360 table; 
 - Page views: 1,350,428
 - Cleaned order records: 4,466
 - Distinct order IDs: 4,451
-- Purchasing customers in the Customer 360 dataset: 4,400
+- Purchasing customers: 4,400
 - Historical average CLV: approximately $82.01
 
 ### RFM Customer Segmentation
@@ -83,9 +83,7 @@ The Customer 360 dbt model references the existing BigQuery Customer 360 table; 
 
 ## 6. Tableau Dashboard
 
-The packaged Tableau workbook is `DA02_Customer360_Final.twbx`.
-
-Dashboard analysis includes:
+The Tableau dashboard includes:
 
 - Monthly Revenue Trend
 - Monthly Orders
@@ -108,10 +106,9 @@ Dashboard analysis includes:
 - `models/` – dbt staging and mart models, source definitions, and schema tests
 - `dbt_project.yml` – dbt project configuration
 - `profiles.yml.example` – example dbt connection configuration
-- `DA02_Customer360_Final.twbx` – Tableau packaged workbook
-- `DA02_Customer360_Project_Documentation.pdf` – project documentation
+- Tableau workbook and dashboard exports
 - CSV files – exported analytical datasets
-- `validate_customer360.py` – Python validation script
+- Python validation script
 
 ## 9. Reproducibility
 
