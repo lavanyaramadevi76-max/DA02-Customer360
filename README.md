@@ -1,57 +1,61 @@
 # DA-02: Customer 360 and Marketing Attribution Platform
 
-**Project:** Nexvia DA-02  
-**Technologies:** Google BigQuery, SQL, dbt, Tableau, Python  
-**Data source:** GA4 public obfuscated ecommerce sample dataset
-
 ## 1. Project Overview
 
-This project develops a Customer 360 analytics prototype using GA4 ecommerce data in BigQuery, supplemented with synthetic CRM-style customer profiles and synthetic advertising spend data.
+DA-02 is a Customer 360 and Marketing Attribution analytics project built using Google BigQuery, SQL, dbt Core, Tableau, and Python.
 
-The objective is to analyze customer behavior, purchasing patterns, customer segments, historical customer lifetime value, and acquisition-channel performance through data transformations and interactive Tableau dashboards.
+The project uses the Google Analytics 4 public ecommerce sample dataset to analyze customer activity, orders, customer value, segmentation, and marketing attribution.
 
 ## 2. Technologies Used
 
-- Google BigQuery – data storage and SQL transformations
-- SQL – data preparation, cleaning, and analytical queries
-- dbt Core with BigQuery adapter – modular data transformations and testing
-- Tableau – dashboard development and visualization
-- Python – CSV data validation
-- Git and GitHub – version control and documentation
+- Google BigQuery – Cloud data warehouse
+- SQL – Data preparation and analytics
+- dbt Core – Data transformation, model management, and testing
+- Tableau – Dashboard development and visualization
+- Python – CSV validation
+- GitHub – Project version control and documentation
 
-## 3. Data Processing and Architecture
+## 3. Data Architecture
 
-1. GA4 ecommerce sample data is stored in BigQuery.
-2. SQL transformations prepare session and order datasets.
-3. Synthetic CRM-style customer profiles and deterministic pseudonymous identity mapping are used to construct Customer 360.
-4. RFM segmentation and historical CLV calculations are performed.
-5. Acquisition-channel attribution is analyzed using available first-user acquisition fields.
-6. Synthetic advertising spend is used for campaign analysis.
-7. Processed datasets are exported for Tableau dashboards and Python validation.
+The project processes ecommerce data in BigQuery and prepares analytical datasets for customer and marketing analysis.
+
+Main processing areas:
+
+- GA4 ecommerce sample data
+- Customer and identity mapping tables
+- Session and order preparation
+- Customer 360 analytics
+- RFM customer segmentation
+- Historical Customer Lifetime Value (CLV)
+- Marketing attribution analysis
+- Tableau dashboard and Python validation
+
+See `DA02_Customer360_Architecture_Diagram.md` for the architecture diagram.
 
 ## 4. dbt Implementation
 
 The dbt project connects to the existing BigQuery `customer360` dataset.
 
-**Models implemented:**
+### Implemented dbt models
 
-| Model | Materialization |
-|---|---|
-| stg_sessions | View |
-| stg_orders | View |
-| customer_360_dbt | Table |
+| Model | Source table | Materialization |
+|---|---|---|
+| stg_sessions | sessions | View |
+| stg_orders | orders_clean | View |
+| customer_360_dbt | customer_360 | Table |
 
-**Completed dbt activities:**
+### dbt activities completed
 
-- dbt connection and configuration
-- Source definitions
-- Staging and mart models
-- Model documentation
-- Three data tests successfully passed
-- dbt run completed successfully
-- dbt documentation generated and served
+- Configured dbt Core and BigQuery connection.
+- Configured source definitions.
+- Created staging and mart models.
+- Executed dbt models successfully.
+- Added data quality tests.
+- Executed dbt tests successfully.
+- Generated dbt documentation
+- Verified model dependencies using the dbt lineage graph.
 
-**Verified output row counts:**
+### Verified model row counts
 
 | Model | Rows |
 |---|---:|
@@ -59,71 +63,23 @@ The dbt project connects to the existing BigQuery `customer360` dataset.
 | stg_orders | 4,466 |
 | customer_360_dbt | 270,154 |
 
-The Customer 360 dbt model references the existing BigQuery Customer 360 table; it does not independently rebuild identity resolution.
+### Data quality
 
-## 5. Key Analytical Results
+Three configured `not_null` tests passed for:
+- stg_sessions.user_pseudo_id
+- stg_orders.order_id
+- stg_orders.customer_id
 
-- Sessions: 360,129
-- Unique users: 270,154
-- Page views: 1,350,428
-- Cleaned order records: 4,466
-- Distinct order IDs: 4,451
-- Purchasing customers: 4,400
-- Historical average CLV: approximately $82.01
+## 5. Customer Analytics
 
-### RFM Customer Segmentation
+The project includes:
 
-| Segment | Customers |
-|---|---:|
-| No Purchase | 265,754 |
-| Recent Customers | 2,717 |
-| Needs Attention | 1,535 |
-| Loyal Customers | 114 |
-| Champions | 34 |
+- Customer 360 analysis
+- RFM segmentation
+- Historical Customer Lifetime Value analysis
+- Customer purchase and revenue analysis
+- Marketing channel attribution
 
-## 6. Tableau Dashboard
+## 6. Marketing Attribution
 
-The Tableau dashboard includes:
-
-- Monthly Revenue Trend
-- Monthly Orders
-- Customer Segmentation
-- Customer Lifetime Value
-- Marketing Channel Performance
-
-## 7. Important Project Limitations
-
-- CRM-style customer profiles and advertising spend data are synthetic.
-- Identity mapping is deterministic for available GA4 pseudonymous user IDs; it is not verified cross-device identity resolution.
-- Attribution uses first-user acquisition source information as a proxy, not complete session-level customer journeys.
-- Synthetic campaign names do not exactly match GA4 campaign names. Therefore, reliable campaign ROI and CPA cannot be calculated.
-- CLV is historical, not predictive. Annualized estimates may be distorted by the short observation period.
-- The dbt models reference existing BigQuery outputs and do not represent a fully rebuilt production pipeline.
-- This project does not demonstrate a live Segment integration or production CRM integration.
-
-## 8. Repository Contents
-
-- `models/` – dbt staging and mart models, source definitions, and schema tests
-- `dbt_project.yml` – dbt project configuration
-- `profiles.yml.example` – example dbt connection configuration
-- Tableau workbook and dashboard exports
-- CSV files – exported analytical datasets
-- Python validation script
-
-## 9. Reproducibility
-
-To execute the dbt project:
-
-1. Install dbt Core and the BigQuery adapter.
-2. Configure the local dbt profile using `profiles.yml.example`.
-3. Authenticate with Google Cloud.
-4. Run `dbt debug`.
-5. Run `dbt run`.
-6. Run `dbt test`.
-7. Generate documentation using `dbt docs generate`.
-
-Never upload local credentials, access tokens, or service-account JSON files to GitHub.
-
-## 10. Conclusion
-
-The DA-02 project demonstrates an analytical Customer 360 workflow using BigQuery, SQL, dbt, Tableau, and Python. It brings together customer, order, session, segmentation, historical CLV, and acquisition-channel analysis in a documented prototype while clearly identifying its data and methodology limitations.
+The attribution prototype compares first-touch, last-touch, linear, and time-dec
